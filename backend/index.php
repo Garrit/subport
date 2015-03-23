@@ -13,7 +13,10 @@ $app->get('/problems/', function ()
     $problems = [];
 
     foreach (glob(PROBLEMS_PATH . '/*', GLOB_ONLYDIR) as $problem_path)
-        $problems[] = read_problem(basename($problem_path));
+    {
+        $problem = read_problem(basename($problem_path));
+        $problems[$problem->name] = $problem;
+    }
 
     echo json_encode($problems);
 });
