@@ -5,11 +5,26 @@ function read_problem($problem_name)
     $problem_file = PROBLEMS_PATH . '/' . $problem_name . '/problem.json';
     $problem = json_decode(file_get_contents($problem_file));
 
-    if (isset($problem->descriptionFile))
+    populate_property_from_file($problem, $problem_file, 'descriptionFile', 'description');
+
+    foreach ($problem->samples as &$sample)
     {
-        $description_file = dirname($problem_file) . '/' . $problem->descriptionFile;
-        $problem->description = file_get_contents($description_file);
+        populate_property_from_file($sample, $problem_file, 'inputFile', 'input');
+        populate_property_from_file($sample, $problem_file, 'outputFile', 'output');
     }
 
+    /* Don't want to expose secret problem cases. */
+    unset($problem->cases);
+
     return $problem;
+}
+
+function populate_property_from_file(&$obj, $problem_file, $src_prop, $target_prop)
+{
+    if (!isset($obj->{$src_prop}))
+        return;
+
+    $file = dirname($problem_file) . '/' . $obj->{$src_prop};
+    $obj->{$target_prop} = file_get_contents($file);
+    unset($obj->{$src_prop});
 }
