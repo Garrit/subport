@@ -5,3 +5,19 @@
 </ol>
 
 {{marked description}}
+
+<h2>Sample Sessions</h2>
+
+{{#each samples}}
+<h3>{{name}}</h3>
+<div class="row">
+    <div class="col-sm-6">
+        <h4>Input</h4>
+        <pre>{{input}}</pre>
+    </div>
+    <div class="col-sm-6">
+        <h4>Output</h4>
+        <pre>{{output}}</pre>
+    </div>
+</div>
+{{/each}}
