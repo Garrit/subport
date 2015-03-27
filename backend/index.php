@@ -27,6 +27,29 @@ $app->get('/problems/:name', function ($problem_name)
     echo json_encode(read_problem(basename($problem_name)));
 });
 
+$app->get('/submissions/', function ()
+{
+    $submissions = [];
+
+    foreach (glob('submissions/*.json') as $submission_path)
+        $submissions[] = json_decode(file_get_contents($submission_path));
+
+    echo json_encode($submissions);
+});
+
+$app->get('/submissions/:id', function ($submission_id)
+{
+    $submission_id = preg_replace('/[^0-9]/', '', $submission_id);
+
+    if (!is_readable('submissions/' . $submission_id . '.json'))
+    {
+        echo 'false';
+        return;
+    }
+
+    echo file_get_contents('submissions/' . $submission_id . '.json');
+});
+
 $app->post('/submit', function ()
 {
     $submission = [];
