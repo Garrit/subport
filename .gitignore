@@ -1,3 +1,5 @@
 bower_components
 backend/vendor
 backend/config.php
+
+submissions/

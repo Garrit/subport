@@ -21,3 +21,28 @@
     </div>
 </div>
 {{/each}}
+
+<h2>Submit Solution</h2>
+
+<form action="backend/submit" method="post" enctype="multipart/form-data" class="form-horizontal">
+    <div class="form-group">
+        <label for="language" class="col-sm-2">Language:</label>
+        <div class="col-sm-10">
+            <select name="language" id="language" class="form-control">
+                <option value="java">Java</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="source" class="col-sm-2">Source code:</label>
+        <div class="col-sm-10">
+            <input type="file" name="source" id="source">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <input type="hidden" name="problem" value="{{name}}">
+            <input type="submit" class="btn btn-primary" value="Submit">
+        </div>
+    </div>
+</form>
