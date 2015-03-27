@@ -24,7 +24,8 @@
 
 <h2>Submit Solution</h2>
 
-<form action="backend/submit" method="post" enctype="multipart/form-data" class="form-horizontal">
+<form action="backend/submit" method="post" enctype="multipart/form-data"
+      id="submission-form" class="form-horizontal">
     <div class="form-group">
         <label for="language" class="col-sm-2">Language:</label>
         <div class="col-sm-10">
@@ -46,3 +47,12 @@
         </div>
     </div>
 </form>
+
+<div id="form-submitting" class="alert alert-info" style="display: none;">
+    Submitting solution...
+</div>
+
+<div id="form-submitted" class="alert alert-success" style="display: none;">
+    Solution submitted. Check its status on the
+    <a href="#/submissions">Submissions</a> page.
+</div>

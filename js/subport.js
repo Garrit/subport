@@ -30,6 +30,19 @@ routie({
         $.getJSON('backend/problems/' + name, function (problem) {
             renderTemplate('problem', problem, function (template) {
                 $('#main').html(template);
+                $('#submission-form').submit(function (ev) {
+                    ev.preventDefault();
+
+                    $(this).ajaxSubmit({
+                        success: function (response) {
+                            $('#form-submitting').hide();
+                            $('#form-submitted').show();
+                        }
+                    });
+
+                    $(this).hide();
+                    $('#form-submitting').show();
+                });
             });
         });
     },
