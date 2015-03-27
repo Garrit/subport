@@ -105,6 +105,7 @@ routie({
                     if (!cases[problemCase.name])
                         return;
 
+                    cases[problemCase.name].input = problemCase.input;
                     cases[problemCase.name].referenceOutput = problemCase.output;
                 });
 
