@@ -1,0 +1,30 @@
+<ol class="breadcrumb">
+    <li><a href=".">Subport</a></li>
+    <li><a href="#/submissions">Submissions</a></li>
+    <li>Submission #{{submission.id}}</li>
+</ol>
+
+<h2>Submission #{{submission.id}}</h2>
+
+<h2>Cases</h2>
+
+{{#each cases}}
+<h3>{{name}} <span class="small">(score {{value}}/{{valueMax}}; {{runtime}}s)</span></h3>
+<div class="row">
+    <div class="col-sm-6">
+        <h4>Submission Output</h4>
+        <pre>{{output}}</pre>
+    </div>
+    <div class="col-sm-6">
+        <h4>Reference Output</h4>
+        <pre>{{referenceOutput}}</pre>
+    </div>
+</div>
+{{/each}}
+
+<h2>Code</h2>
+
+{{#each submission.files}}
+<h3><code>{{filename}}</code></h3>
+<pre>{{contents}}</pre>
+{{/each}}

@@ -13,8 +13,11 @@ function read_problem($problem_name)
         populate_property_from_file($sample, $problem_file, 'outputFile', 'output');
     }
 
-    /* Don't want to expose secret problem cases. */
-    unset($problem->cases);
+    foreach ($problem->cases as &$case)
+    {
+        populate_property_from_file($case, $problem_file, 'inputFile', 'input');
+        populate_property_from_file($case, $problem_file, 'outputFile', 'output');
+    }
 
     return $problem;
 }

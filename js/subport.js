@@ -9,7 +9,7 @@ var setActiveMenuItem = function (item) {
 
 var renderTemplate = function (template, contents, callback) {
     $.get(template + '.html', function (source) {
-        template = Handlebars.compile(source);
+        var template = Handlebars.compile(source);
         callback(template(contents));
     })
 };
@@ -26,6 +26,7 @@ routie({
         });
     },
     '/problems/:name': function (name) {
+        setActiveMenuItem('problems');
 
         $.getJSON('backend/problems/' + name, function (problem) {
             renderTemplate('problem', problem, function (template) {
@@ -49,8 +50,74 @@ routie({
     '/submissions': function () {
         setActiveMenuItem('submissions');
 
-        renderTemplate('submissions', {}, function (template) {
-            $('#main').html(template);
+        $.getJSON('backend/submissions/', function (submissions) {
+            submissions = submissions.map(function (submission) {
+                if (submission.cases) {
+                    var wrong = 0;
+                    var runtime = 0;
+
+                    submission.cases.forEach(function (submissionCase) {
+                        if (submissionCase.value < submissionCase.valueMax)
+                            wrong++;
+                        runtime += submissionCase.runtime;
+                    });
+
+                    if (wrong > 0)
+                        submission.status = 'failed';
+                    else
+                        submission.status = 'passed';
+
+                    submission.runtime = runtime / 1000 + 's';
+                }
+                else {
+                    submission.status = 'in-progress';
+                }
+
+                return submission;
+            });
+
+            var contents = {submissions: submissions};
+
+            renderTemplate('submissions', contents, function (template) {
+                $('#main').html(template);
+
+                $('.submission-row').click(function () {
+                    routie('/submissions/' + $(this).data('submission-id'));
+                });
+            });
+        });
+    },
+    '/submissions/:id': function (id) {
+        setActiveMenuItem('submissions');
+
+        $.getJSON('backend/submissions/' + id, function (submission) {
+            $.getJSON('backend/problems/' + submission.problem, function (problem) {
+
+                var cases = {}
+
+                submission.cases.forEach(function (submissionCase) {
+                    submissionCase.output = atob(submissionCase.output);
+                    submissionCase.runtime /= 1000;
+                    cases[submissionCase.name] = submissionCase;
+                });
+
+                problem.cases.forEach(function (problemCase) {
+                    if (!cases[problemCase.name])
+                        return;
+
+                    cases[problemCase.name].referenceOutput = problemCase.output;
+                });
+
+                submission.files.forEach(function (file, index, array) {
+                    array[index].contents = atob(file.contents);
+                });
+
+                var contents = {submission: submission, problem: problem, cases: cases}
+
+                renderTemplate('submission', contents, function (template) {
+                    $('#main').html(template);
+                });
+            });
         });
     }
 });

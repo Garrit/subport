@@ -95,4 +95,15 @@ $app->post('/submit', function ()
     echo $response;
 });
 
+$app->post('/report', function () {
+    $submission = file_get_contents('php://input');
+
+    if (!file_exists('submissions'))
+        mkdir('submissions');
+
+    $submission_file = fopen('submissions/' . json_decode($submission)->id . '.json', 'wb');
+    fwrite($submission_file, $submission);
+    fclose($submission_file);
+});
+
 $app->run();

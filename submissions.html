@@ -1,0 +1,26 @@
+<h2>Submissions</h2>
+
+<p>Click on a submission for more details.</p>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Problem</th>
+            <th>Language</th>
+            <th>Status</th>
+            <th>Runtime</th>
+        </tr>
+    </thead>
+    <tbody>
+{{#each submissions}}
+        <tr class="submission-row" data-submission-id="{{id}}">
+            <td>{{id}}</td>
+            <td>{{problem}}</td>
+            <td>{{language}}</td>
+            <td>{{status}}</td>
+            <td>{{runtime}}</td>
+        </tr>
+{{/each}}
+    </tbody>
+</table>
