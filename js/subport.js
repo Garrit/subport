@@ -52,7 +52,15 @@ routie({
 
         $.getJSON('backend/submissions/', function (submissions) {
             submissions = submissions.map(function (submission) {
-                if (submission.cases) {
+                if (submission.type) {
+                    if (submission.type == 'E_COMPILATION')
+                        submission.status = 'compilation error';
+                    else if (submission.type == 'E_RUNTIME')
+                        submission.status = 'runtime error';
+                    else
+                        submission.status = 'error';
+                }
+                else if (submission.cases) {
                     var wrong = 0;
                     var runtime = 0;
 
