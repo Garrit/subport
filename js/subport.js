@@ -54,11 +54,14 @@ routie({
             submissions = submissions.map(function (submission) {
                 if (submission.type) {
                     if (submission.type == 'E_COMPILATION')
-                        submission.status = 'compilation error';
+                        var status = 'compilation error';
                     else if (submission.type == 'E_RUNTIME')
-                        submission.status = 'runtime error';
+                        var status = 'runtime error';
                     else
-                        submission.status = 'error';
+                        var status = 'error';
+
+                    submission = submission.submission;
+                    submission.status = status;
                 }
                 else if (submission.cases) {
                     var wrong = 0;
